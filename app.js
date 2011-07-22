@@ -5,9 +5,7 @@
 
 var express = require('express');
 var app = module.exports = express.createServer();
-var mongoose = require('mongoose');
-
-app.db = null;
+var mongoose = app.mongoose = require('mongoose');
 
 // Configuration.
 app.configure(function(){
@@ -22,16 +20,16 @@ app.configure(function(){
 
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-  app.db = mongoose.createConnection('mongodb://127.0.0.1/nodepad-dev');
+  mongoose.connect('mongodb://127.0.0.1/nodepad-dev');
 });
 
 app.configure('production', function(){
   app.use(express.errorHandler());
-  app.db = mongoose.createConnection('mongodb://127.0.0.1/nodepad');
+  mongoose.connect('mongodb://127.0.0.1/nodepad');
 });
 
 app.configure('test', function() {
-  app.db = mongoose.createConnection('mongodb://127.0.0.1/nodepad-test');
+  mongoose.connect('mongodb://127.0.0.1/nodepad-test');
 })
 
 // Controllers.
@@ -44,4 +42,7 @@ app.get('/', function(req, res){
   });
 });
 
-app.listen(3000);
+// Enable if using node-inspector.
+if (!process.env.cluster) {
+  app.listen(3000);
+}

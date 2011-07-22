@@ -2,11 +2,11 @@ var DocumentController = module.exports = function(app) {
   var app = app;
   
   // Models.
-  var Document = require('../models/Document.js')(app.db);
+  var Document = require('../models/Document.js')(app.mongoose);
   
   // Document list
   app.get('/documents.:format?', function(req, res) {
-    Document.find().all(function(documents) {
+    Document.find(function(documents) {
       switch (req.params.format) {
         case 'json':
           res.send(documents.map(function(d) {

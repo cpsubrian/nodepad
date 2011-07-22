@@ -1,3 +1,5 @@
+process.env.cluster = true;
+
 var cluster = require('cluster');
 
 cluster('./app')
