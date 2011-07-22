@@ -15,7 +15,9 @@ var DocumentController = module.exports = function(app) {
         break;
   
         default:
-          res.render('documents');
+          res.render('documents', {
+            title: 'Documents'
+          });
       }
     });
   });
