@@ -1,0 +1,10 @@
+<h2>Edit Document</h2>
+<p>
+  <a href="/documents" class="button">
+    &larr; All Documents
+  </a>
+<form method="post" action="/documents/${doc._id}">
+  <input name="document[id]" value="${doc._id}" type="hidden" />
+  <input name="_method" value="PUT" type="hidden" />
+  {{partial({doc: doc}) 'partials/fields'}}
+</form>

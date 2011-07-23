@@ -1,0 +1,8 @@
+<h2>New Document</h2>
+<p>
+  <a href="/documents" class="button">
+    &larr; All Documents
+  </a>
+<form method="post" action="/documents">
+  {{partial({doc: doc}) 'partials/fields'}}
+</form>

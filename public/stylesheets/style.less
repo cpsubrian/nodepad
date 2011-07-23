@@ -1,0 +1,60 @@
+/**
+ * Mixins
+ */
+.border-radius (@radius: 5px) {
+  -moz-border-radius: @radius;
+  -webkit-border-radius: @radius;
+  border-radius: @radius;
+}
+.text-shadow (@x: 0) { 
+  -moz-text-shadow: @arguments;
+  -webkit-text-shadow: @arguments;
+  text-shadow: @arguments;
+}
+
+/**
+ * Main Styles
+ */
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", "Helvetica Nueue", Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, p, ul, li { margin: 0; padding: 0 0 20px 0 }
+
+ul {
+  list-style-type: none
+}
+ 
+ul li {
+  padding-bottom: 20px;
+}
+ 
+a.button {
+  margin: 0 10px 0 0; 
+  padding: 2px 4px;
+  background-color: #ccc;
+  text-decoration: none;
+  color: #000;
+  
+  .text-shadow(#faf9f9 0 1px 1px); 
+  .border-radius(4px);
+}
+
+a.button:hover {
+  background-color: #efefef;
+}
+
+h2 a.button {
+  margin-left: 10px
+}
+
+form div {
+  padding: 0 0 20px 0;
+}
+
+textarea {
+  width: 400px;
+  height: 400px;
+  clear: both;
+}

@@ -1,4 +1,16 @@
-<h2>Documents Lists</h2>
+<h1>Your Documents</h1>
+
+<p>
+  <a class="button" href="/documents/new">New Document</a>
+</p>
+
 <ul>
-	<li>A document would go here.</li>
+  {{each(i, doc) docs}}
+    <li>
+      <a class="button" href="/documents/${doc._id}/edit">Edit</a>
+      <a class="button destroy" href="/documents/${doc._id}">Delete</a>
+      <a href="/documents/${doc._id}">${doc.title}</a>
+		</li>
+	{{/each}}
 </ul>
+
