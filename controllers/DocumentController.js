@@ -19,21 +19,22 @@ module.exports = function(application) {
  * @param app
  *  The express application object.
  */
-var DocumentController = function() {  
-  // API routes
+var DocumentController = function() {
   app.get('/documents.:format?', this.listDocs);
-  app.get('/documents/:id/edit', this.editDoc);
-  app.get('/documents/new', this.newDoc);  
   app.post('/documents.:format?', this.createDoc);
-  app.get('/documents/:id.:format?', this.readDoc);
-  app.put('/documents/:id.:format?', this.updateDoc);
-  app.del('/documents/:id.:format?', this.deleteDoc);
+  app.get('/documents/new', this.newDoc);
+  
+  app.param(':docId', this.docIdParam);
+  app.get('/documents/:docId/edit', this.editDoc);
+  app.get('/documents/:docId.:format?', this.readDoc);
+  app.put('/documents/:docId.:format?', this.updateDoc);
+  app.del('/documents/:docId.:format?', this.deleteDoc);
 }
 
 /**
  * DocumentController Prototype.
  */
-DocumentController.prototype = {     
+DocumentController.prototype = {
   /**
    * Document list.
    */
@@ -76,37 +77,34 @@ DocumentController.prototype = {
    * Read document.
    */
   readDoc : function(req, res) {
-    Document.findById(req.params.id, function(err, doc) {
-      switch (req.params.format) {
-        case 'json':
-          res.send(doc.__doc);
-        break;
-
-        default:
-          res.render('documents/show', {
-            doc: doc
-          });
-      }
-    });
+    switch (req.params.format) {
+      case 'json':
+        res.send(req.doc.__doc);
+      break;
+  
+      default:
+        res.render('documents/show', {
+          doc: req.doc
+        });
+    }
   },
 
   /**
    * Update document.
    */
   updateDoc : function(req, res) {
-    Document.findById(req.body.document.id, function(err, doc) {
-      doc.title = req.body.document.title;
-      doc.data = req.body.document.data;
-      doc.save(function() {
-        switch (req.params.format) {
-          case 'json':
-            res.send(doc.__doc);
-           break;
+    var doc = req.doc;
+    doc.title = req.body.document.title;
+    doc.data = req.body.document.data;
+    doc.save(function() {
+      switch (req.params.format) {
+        case 'json':
+          res.send(doc.__doc);
+         break;
 
-           default:
-            res.redirect('/documents');
-        }
-      });
+         default:
+          res.redirect('/documents');
+      }
     });
   },
 
@@ -114,17 +112,15 @@ DocumentController.prototype = {
    * Delete document.
    */
   deleteDoc : function(req, res) {
-    Document.findById(req.params.id, function(err, doc) {
-      doc.remove(function() {
-        switch (req.params.format) {
-          case 'json':
-            res.send('true');
-           break;
+    res.doc.remove(function() {
+      switch (req.params.format) {
+        case 'json':
+          res.send('true');
+         break;
 
-           default:
-            res.redirect('/documents');
-        }
-      });
+         default:
+          res.redirect('/documents');
+      }
     });
   },
   
@@ -132,10 +128,8 @@ DocumentController.prototype = {
    * Edit document.
    */
   editDoc : function(req, res) {
-    Document.findById(req.params.id, function(err, doc) {
-      res.render('documents/edit', {
-        doc: doc
-      });
+    res.render('documents/edit', {
+      doc: req.doc
     });
   },
   
@@ -145,6 +139,18 @@ DocumentController.prototype = {
   newDoc : function(req, res) {
     res.render('documents/new', {
       doc: new Document()
+    });
+  },
+  
+  /**
+   * DocId Param Pre-Conditions.
+   */
+  docIdParam : function(req, res, next, id){
+    Document.findById(id, function(err, doc) {
+      if (err) return next(err);
+      if (!doc) return next(new Error('failed to find document'));
+      req.doc = doc;
+      next();
     });
   }
 }
