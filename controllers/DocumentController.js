@@ -1,34 +1,32 @@
 /**
  * Module Variables.
  */
-var Document = null;
-var app = null;
+var Document, app;
 
 // Export an instance of a DocumentController.
 module.exports = function(application) {
   app = application;
-  Document = require('../models/Document.js')(app.mongoose);
-  return new DocumentController(app)
+  Document = app.Document = require('../models/Document.js')(app.mongoose);
+  return new DocumentController()
 }
 
 /**
  * DocumentController
  * 
  * Sets up routes and logic for interacting with documents.
- * 
- * @param app
- *  The express application object.
  */
 var DocumentController = function() {
-  app.get('/documents.:format?', this.listDocs);
-  app.post('/documents.:format?', this.createDoc);
-  app.get('/documents/new', this.newDoc);
+  var loadUser = app.UserController.loadUser;
+  
+  app.get('/documents.:format?', loadUser, this.listDocs);
+  app.post('/documents.:format?', loadUser, this.createDoc);
+  app.get('/documents/new', loadUser, this.newDoc);
   
   app.param(':docId', this.docIdParam);
-  app.get('/documents/:docId/edit', this.editDoc);
-  app.get('/documents/:docId.:format?', this.readDoc);
-  app.put('/documents/:docId.:format?', this.updateDoc);
-  app.del('/documents/:docId.:format?', this.deleteDoc);
+  app.get('/documents/:docId/edit', loadUser, this.editDoc);
+  app.get('/documents/:docId.:format?', loadUser, this.readDoc);
+  app.put('/documents/:docId.:format?', loadUser, this.updateDoc);
+  app.del('/documents/:docId.:format?', loadUser, this.deleteDoc);
 }
 
 /**
@@ -50,7 +48,8 @@ DocumentController.prototype = {
         default:
           res.render('documents', {
             title: 'Documents',
-            docs: docs
+            docs: docs,
+            currentUser: req.currentUser
           });
       }
     });
@@ -84,7 +83,8 @@ DocumentController.prototype = {
   
       default:
         res.render('documents/show', {
-          doc: req.doc
+          doc: req.doc,
+          currentUser: req.currentUser
         });
     }
   },
@@ -129,7 +129,8 @@ DocumentController.prototype = {
    */
   editDoc : function(req, res) {
     res.render('documents/edit', {
-      doc: req.doc
+      doc: req.doc,
+      currentUser: req.currentUser
     });
   },
   
@@ -138,7 +139,8 @@ DocumentController.prototype = {
    */
   newDoc : function(req, res) {
     res.render('documents/new', {
-      doc: new Document()
+      doc: new Document(),
+      currentUser: req.currentUser
     });
   },
   

@@ -1,0 +1,9 @@
+<h2>Register</h2>
+
+<form method="post" action="/users">
+  {{partial({user: user}) 'partials/fields'}}
+  <div>
+    <input type="submit" value="Register" />
+    <span> \ or <a href="/sessions/new">Log In</a></span>
+	</div>
+</form>

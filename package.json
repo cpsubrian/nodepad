@@ -8,5 +8,6 @@
     , "cluster": ">= 0.0.1"
     , "mongoose": ">= 0.0.1"
     , "less": ">= 0.0.1"
+		, "connect-mongodb": ">= 0.0.1"
   }
 }
