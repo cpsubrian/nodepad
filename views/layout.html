@@ -3,10 +3,29 @@
   <head>
     <title>${title}</title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
+		<link rel="stylesheet" href="/stylesheets/aristo/jquery-ui-1.8.7.custom.css" />
+		<script type="text/javascript" src="/javascripts/json.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-    <script type="text/javascript" src="/javascripts/application.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"></script>
   </head>
   <body>
-    {{html body}}
+    <div id="container">
+      <div id="header">
+        <ul>
+          <li>
+            <h1>
+              <a href="/">${title}</a>
+					  </h1>
+				  </li>
+          {{if typeof currentUser !== 'undefined'}}
+	          <li class="right">
+	            <a href="/sessions" class="destroy">Log Out</a>
+						</li>
+				  {{/if}}
+			 </ul> 
+			</div>
+      {{html body}}
+	 </div>
+	 <script type="text/javascript" src="/javascripts/application.js"></script>
   </body>
 </html>

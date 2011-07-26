@@ -41,7 +41,7 @@ DocumentController.prototype = {
       switch (req.params.format) {
         case 'json':
           res.send(docs.map(function(doc) {
-            return doc.__doc;
+            return doc.toJSON();
           }));
         break;
 
@@ -63,7 +63,7 @@ DocumentController.prototype = {
     doc.save(function() {
       switch (req.params.format) {
         case 'json':
-          res.send(doc.__doc);
+          res.send(doc.toJSON());
          break;
 
          default:
@@ -78,7 +78,7 @@ DocumentController.prototype = {
   readDoc : function(req, res) {
     switch (req.params.format) {
       case 'json':
-        res.send(req.doc.__doc);
+        res.send(req.doc.toJSON());
       break;
   
       default:
@@ -99,7 +99,7 @@ DocumentController.prototype = {
     doc.save(function() {
       switch (req.params.format) {
         case 'json':
-          res.send(doc.__doc);
+          res.send(doc.toJSON());
          break;
 
          default:

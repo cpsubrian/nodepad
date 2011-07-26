@@ -64,7 +64,7 @@ UserController.prototype = {
     function userSaved() {
       switch (req.params.format) {
         case 'json':
-          res.send(user.__doc);
+          res.send(user.toJSON());
         break;
 
         default:

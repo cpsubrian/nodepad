@@ -12,10 +12,9 @@ module.exports = function(mongoose) {
     data: String,
     tags: [String]
   });
-  DocumentSchema.virtual('id')
-    .get(function() {
-      return this._id.toHexString();
-    });
+  DocumentSchema.virtual('id').get(function() {
+    return this._id.toHexString();
+  });
   
   mongoose.model('Document', DocumentSchema);
   
